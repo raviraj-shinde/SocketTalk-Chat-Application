@@ -13,8 +13,9 @@ public class Server {
   public Server() {
     try {
       server = new ServerSocket(7777);
-      System.out.println("Server is ready to accept connection \n waiting...");
+      System.out.print("Server is ready to accept connection \n waiting...");
       socket = server.accept(); 
+      System.out.println("Connection Done.");
       br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       out = new PrintWriter(socket.getOutputStream());
 
