@@ -95,6 +95,7 @@ public class Client extends JFrame {
     messageArea.setFont(font);
     messageInput.setFont(font);
 
+      //coding for component ( Location, image etc )
     heading.setIcon(new ImageIcon("Images/clogo.png"));
     heading.setHorizontalTextPosition(SwingConstants.CENTER);
     heading.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -103,10 +104,8 @@ public class Client extends JFrame {
     messageArea.setEditable(false);
     messageInput.setHorizontalAlignment(SwingConstants.CENTER);
 
-    //frame Layout
+    //frame Layout (North west etc to arrange Components)
     this.setLayout( new BorderLayout());
-
-    //adding the components to frame
     this.add(heading, BorderLayout.NORTH);
     JScrollPane jScrollPane = new JScrollPane(messageArea);
     this.add(jScrollPane, BorderLayout.CENTER);
