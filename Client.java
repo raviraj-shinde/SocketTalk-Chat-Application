@@ -68,7 +68,6 @@ public class Client extends JFrame {
 
       @Override
       public void keyReleased(KeyEvent e) {
-        // TODO Auto-generated method stub
         if (e.getKeyCode() == 10) {
           //System.out.println("you have entered enter button");
           String messageToSende = messageInput.getText();

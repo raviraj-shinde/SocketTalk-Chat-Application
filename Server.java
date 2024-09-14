@@ -12,7 +12,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 public class Server extends JFrame {
 
@@ -34,24 +33,50 @@ public class Server extends JFrame {
   //Constructor
   public Server() {
     try {
-      // server = new ServerSocket(7777);
-      // System.out.print("Server is ready to accept connection \n waiting...");
-      // socket = server.accept();
-      // System.out.println("Connection Done.");
-      // br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      // out = new PrintWriter(socket.getOutputStream());
+      server = new ServerSocket(7777);
+      System.out.print("Server is ready to accept connection \n waiting...");
+      socket = server.accept();
+      System.out.println("Connection Done.");
+      br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+      out = new PrintWriter(socket.getOutputStream());
 
       createGUI();
-      //handleEvents();
+      handleEvents();
 
-      // startReading();
-      // startWriting();
+      startReading();
+      // startWriting(); //already implemented by using GUI
     } catch (Exception e) {
       System.out.println("Connection closed or error in writing.");
       isRunning = false; // Stop both threads if there's an exception
     }
   }
 
+  private void handleEvents(){
+    messageInput.addKeyListener(new KeyListener() {
+
+      @Override
+      public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+        // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == 10) {
+          String messageToSend = messageInput.getText();
+          messageArea.append("Me:" + messageToSend + "\n");
+          out.println(messageToSend);
+          out.flush();
+          messageInput.setText("");
+        }
+      }
+      
+    });
+  }
   private void createGUI() {
     //GUI code (Window)
     this.setTitle("Server Messanger");
@@ -76,7 +101,8 @@ public class Server extends JFrame {
     //frame Layout North west etc to arrange Components)
     this.setLayout(new BorderLayout());
     this.add(heading, BorderLayout.NORTH);
-    this.add(messageArea, BorderLayout.CENTER);
+    JScrollPane jScrollPane = new JScrollPane(messageArea); //enable Scrolling
+    this.add(jScrollPane, BorderLayout.CENTER);
     this.add(messageInput, BorderLayout.SOUTH);
 
     this.setVisible(true);
@@ -91,11 +117,13 @@ public class Server extends JFrame {
           String msg = br.readLine();
           if (msg.equals("exit")) {
             System.out.println("Client terminated the chat");
+            JOptionPane.showMessageDialog(this, "Server Terminated the chat"); //To show Dialog Box
+            messageInput.setEnabled(false);
             isRunning = false; // Stop both threads
             socket.close(); // Close the socket
             break;
           }
-          System.out.println("Client: " + msg);
+          messageArea.append("Client: " + msg + "\n");
         }
       } catch (Exception e) {
         System.out.println("Connection closed or error in Reading.");
