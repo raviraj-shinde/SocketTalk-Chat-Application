@@ -1,12 +1,29 @@
 import java.io.*;
 import java.net.*;
 
-public class Client {
+import java.awt.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+
+public class Client extends JFrame {
 
   Socket socket;
 
   BufferedReader br;
   PrintWriter out;
+
+  //Declare Componenet
+  private JLabel heading  = new JLabel("CLient Area");
+  private JTextArea messageArea = new JTextArea();
+  private JTextField messageInput = new JTextField();
+  private Font font = new Font("Roboto", Font.PLAIN ,20);
 
   // Volatile boolean flag for stopping both threads
   private volatile boolean isRunning = true;
@@ -14,18 +31,51 @@ public class Client {
   //Constructor
   public Client() {
     try {
-      System.out.print("Sending Request to Server : ");
+      /*System.out.print("Sending Request to Server : ");
       socket = new Socket("127.0.0.1", 7777);
       System.out.println("Connection Done");
 
       br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      out = new PrintWriter(socket.getOutputStream());
+      out = new PrintWriter(socket.getOutputStream());*/
 
-      startReading();
-      startWriting();
+      createGUI();
+
+      /*startReading();
+      startWriting();*/
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private void createGUI(){
+    //GUI code...
+    this.setTitle("Client Messanger [END]");
+    this.setSize(600,700);
+    this.setLocationRelativeTo(null);
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    //coding for component
+    heading.setFont(font);
+    messageArea.setFont(font);
+    messageInput.setFont(font);
+
+    heading.setIcon(new ImageIcon("Images/clogo.png"));
+    heading.setHorizontalTextPosition(SwingConstants.CENTER);
+    heading.setVerticalTextPosition(SwingConstants.BOTTOM);
+    heading.setHorizontalAlignment(SwingConstants.CENTER);
+    heading.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+    messageInput.setHorizontalAlignment(SwingConstants.CENTER);
+
+    //frame Layout
+    this.setLayout( new BorderLayout());
+
+    //adding the components to frame
+    this.add(heading, BorderLayout.NORTH);
+    this.add(messageArea, BorderLayout.CENTER);
+    this.add(messageInput, BorderLayout.SOUTH);
+
+
+    this.setVisible(true);
   }
 
   public void startReading() {
